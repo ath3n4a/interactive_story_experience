@@ -1,0 +1,386 @@
+  <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Story Experience | IMDA</title>
+    <link rel="icon" type="image/x-icon" href="images/imda-favicon.png">
+    <link rel="stylesheet" href="interactive_story_style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Schoolbell&display=swap" rel="stylesheet">
+    <script src="interactive_story_experience.js"></script>
+    <script src="https://kit.fontawesome.com/f966eced82.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+
+<body>
+<!-- Title Screen -->
+  <div id="title-screen" style="display: none; flex-direction: column; align-items: center; justify-content: center;">
+  
+  <!-- Page 1 -->
+  <div id="title-screen-page1" style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 50px;">
+  <input type="text" id="player-name" name="player-name" placeholder="My name is..." autocomplete="off">
+    <button id="start-button" onclick="startGame()">
+      <img src="images/start-button.png" alt="Start" style="width: 100%; height: auto;">
+    </button>
+  </div>
+</div>
+
+  <audio id="bgm" src="audio/bgm.mp3" loop></audio>
+  <audio id="positive-sfx" src="audio/positive.mp3"></audio>
+  <audio id="negative-sfx" src="audio/negative.mp3"></audio>
+  <audio id="select-sfx" src="audio/select.mp3"></audio>
+  <audio id="hover-sfx" src="audio/hover.wav"></audio>
+  <audio id="mom-knock-sfx" src="audio/mom-knock.mp3"></audio>
+  <audio id="keyboard-typing-sfx" src="audio/keyboard-typing.mp3" loop></audio>
+  <audio id="phone-typing-sfx" src="audio/phone-typing.mp3" loop></audio>
+  <audio id="message-sent-sfx" src="audio/message-sent.mp3"></audio>
+
+
+
+</div>
+<div id="invite-modal" style="display:none;">
+  <div class="invite-card">
+    <div class="invite-title">You've been invited to join</div>
+    <div class="invite-name">ggnore's hideout</div>
+    <button id="invite-join-btn" class="invite-cta">Join Server</button>
+  </div>
+</div>
+<!-- Start of Chapter 1 -->
+<div id="relationship-bar">
+  <div id="relationship-label">Friendship with Jake</div>
+</div>
+
+<button id="chatlog-btn" title="Chat Log" style="display:none;">📄</button>
+
+<div id="chatlog-overlay" style="display:none;">
+  <div class="chatlog-backdrop" data-close></div>
+  <section class="chatlog-card">
+    <header class="chatlog-header">
+      <h2>Chat Log</h2>
+      <button class="chatlog-close" data-close>&times;</button>
+    </header>
+    <div id="chatlog-content" class="chatlog-content"><!-- rendered via JS --></div>
+  </section>
+</div>
+<!-- Chapter Screens -->
+<div id="chapter-1-screen" class="chapter-screen" style="display: none;">
+  <div class="chapter-content">Chapter 1</div>
+</div>
+<div id="chapter-2-screen" class="chapter-screen" style="display: none;">
+  <div class="chapter-content">Chapter 2</div>
+</div>
+<div id="chapter-3-screen" class="chapter-screen" style="display: none;">
+  <div class="chapter-content">Chapter 3</div>
+</div>
+<div id="chapter-4-screen" class="chapter-screen" style="display: none;">
+  <div class="chapter-content">Chapter 4</div>
+</div>
+<div id="chapter-5-screen" class="chapter-screen" style="display: none;">
+  <div class="chapter-content">Chapter 5</div>
+</div>
+<div id="chapter-6-screen" class="chapter-screen" style="display: none;">
+  <div class="chapter-content">Chapter 6</div>
+</div>
+<div id="chapter-7-screen" class="chapter-screen" style="display: none;">
+  <div class="chapter-content">Chapter 7</div>
+</div>
+<div id="chapter-8-screen" class="chapter-screen" style="display: none;">
+  <div class="chapter-content">Chapter 8</div>
+</div>
+<div id="chapter-9-screen" class="chapter-screen" style="display: none;">
+  <div class="chapter-content">Chapter 9</div>
+</div>
+<div id="chapter-10-screen" class="chapter-screen" style="display: none;">
+  <div class="chapter-content">Chapter 10</div>
+</div>
+<div id="livestream-screen"></div>
+<button id="play-button" onclick="startLivestream()">
+  <img src="images/play-button.png" alt="Play">
+</button>
+<div id="livestream-play-screen" style="display: none;"></div>
+<div class="chapter-1">
+  <img id="jake-shadow-overlay" src="images/jake-shadow-overlay.png" style="display: none;">
+  <div id="server-screen"></div>
+  <div id="valorian-with-jake-screen" style="display: none;"></div>
+  <div id="victory-screen"></div>
+  <div id="dm-screen"></div>
+  <div id="defeat-screen"></div>
+  <div id="kitchen-screen"></div>
+  <div id="gun-skins-screen"></div>
+  <div id="phone-ring-screen"></div>
+  <div id="homework-keyboard-screen"></div>
+  <img id="mom-standing"  src="images/mom-standing.png"  style="display:none; position:fixed; left:-15vw; bottom:-10vh; width:95%; height:auto; z-index:80; pointer-events:none;">
+  <img id="mom-talking-1" src="images/mom-talking-1.png" style="display:none; position:fixed; left:-12vw; bottom:-10vh; width:98%; height:auto; z-index:80; pointer-events:none;">
+  <img id="mom-talking-2" src="images/mom-talking-2.png" style="display:none; position:fixed; left:-12vw; bottom:-10vh; width:98%; height:auto; z-index:80; pointer-events:none;">
+  <div id="video-call-screen"></div>
+  <div id="phone-on-bed-screen" style="display: none;">
+  <video id="phone-on-bed-video"
+         src="images/room-in-dark.jpg"
+         muted
+         playsinline
+         preload="auto"></video>
+  </div>  
+
+<!-- Content Warning Screen -->
+<div id="content-warning-screen" style="display: none;">
+  <div id="content-warning-content">
+    <h1>⚠️ Content Warning ⚠️</h1>
+    <p>The following chapter contains mature themes. Viewer discretion is advised.<br>
+    If at any point you feel uncomfortable, please feel free to leave the experience.</p>
+  </div>
+</div>
+
+  <div id="mom-knock-screen" src="images/mom-knock-screen.gif" style="display: none;"></div>
+  <div id="hallway-screen" style="display: none;"></div>
+  <div id="train-station-screen"></div>
+
+  <img id="jake-smiling"
+     src="images/jake-smiling.png"
+     style="display:none; position:fixed; right:-10vw; bottom:-10vh; width:95%vw; height:auto; z-index:80; pointer-events:none;">
+
+     <!-- MRT: Y/N steps back -->
+<img id="step-back-1"
+     src="images/step-back-1.png"
+     style="display:none; position:fixed; right:-10vw; bottom:0vh; width:auto; height:100%; z-index:80; pointer-events:none;">
+<img id="step-back-2"
+     src="images/step-back-2.png"
+     style="display:none; position:fixed; right:-10vw; bottom:0vh; width:auto; height:100%; z-index:80; pointer-events:none;">
+
+
+  <div class="dialogue-container" style="display: none;">
+  <div class="name-tag" id="name-tag">@jake</div>
+
+  <div class="choice-box" id="choice-box" style="display: none;">
+    <button class="choice-button" onclick="chooseOption(1)">Yeah, invite me?</button>
+    <button class="choice-button" onclick="chooseOption(2)">I'm not that good, but sure.</button>
+  </div>
+
+  <button class="dialogue-box" onclick="nextDialogue()">
+    <p id="dialogue"></p>
+    <i class="fas fa-forward dialogue-icon"></i>
+  </button>
+</div>
+
+<!-- Desktop DM Interface -->
+<div id="dm-desktop-interface" style="display: none;">
+  <div class="desktop-dm-header">
+    <div class="desktop-dm-user-info">
+      <div class="desktop-dm-avatar">J</div>
+      <span class="desktop-dm-username">@jake</span>
+      <div class="desktop-dm-status">
+        <div class="desktop-dm-status-dot"></div>
+        <span>Online</span>
+      </div>
+    </div>
+  </div>
+  <div class="desktop-dm-messages" id="dm-messages">
+    <!-- Messages will be added here dynamically -->
+  </div>
+  <div class="desktop-dm-input-container">
+    <div class="desktop-dm-input-box" id="dm-input-box" contenteditable="false" placeholder=""></div>
+    <button class="desktop-dm-send-button" id="dm-send-button" style="display: none;">
+      <i class="fas fa-paper-plane"></i>
+    </button>
+  </div>
+</div>
+
+<!-- Mobile DM Interface -->
+<div id="mobile-dm-screen" style="display: none;">
+    <div id="mobile-dm-interface" style="display: none;">
+        <div class="phone-mockup">
+            <div class="mobile-dm-container">
+                <div class="mobile-dm-header">
+                    <div class="mobile-dm-user-info">
+                        <div class="mobile-dm-avatar">J</div>
+                        <span class="mobile-dm-username">@jake</span>
+                        <div class="mobile-dm-status">
+                            <div class="mobile-dm-status-dot"></div>
+                            <span>Online</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mobile-dm-messages" id="mobile-dm-messages">
+                    <!-- Messages will be added here dynamically -->
+                </div>
+                <div class="mobile-dm-input-container">
+                    <div class="mobile-dm-input-box" id="mobile-dm-input-box" contenteditable="false" placeholder=""></div>
+                    <button class="mobile-dm-send-button" id="mobile-dm-send-button" style="display: none;">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<img id="mom-sweeping"
+     src="images/mom-sweeping.png"
+     style="display:none; position:fixed; right:-10vw; bottom:-10vh; width:95%; height:auto; z-index:80; pointer-events:none;">
+
+</div>  
+
+
+<div id="end-screen" style="display: none;">
+  <div id="end-screen-content">
+    <h1>Online grooming can be difficult to recognise.</h1>
+    <p>i.e. “The act of building up a trusting and emotional relationship with a minor, <br> usually with the purpose of sexual exploitation, gratification or abuse.” (IMDA)</p>
+  </div>
+    <button id="to-summary-button" class="nav-button" onclick="showSummaryScreen()">Next</button>
+</div>
+
+<!-- After the end-screen div, add this: -->
+<div id="summary-screen" style="display: none;">
+  <div id="summary-content">
+    <h1>Here are the choices you made.</h1>
+    
+    <div class="summary-chapter">
+      <h2>Chapter 2</h2>
+      <div class="choice-line">
+        <span class="checkbox" id="school-told">☑</span>
+        <span>You told Jake your school.</span>
+      </div>
+      <div class="choice-line">
+        <span class="checkbox" id="school-not-told">☐</span>
+        <span>You didn't tell Jake your school.</span>
+      </div>
+      <p class="explanation">
+        Sharing your school might seem harmless, but online groomers may piece together information to find your whereabouts. 
+        Deflecting personal questions about your full name, age, school, and address keeps your identity private.
+      </p>
+    </div>
+
+    <div class="summary-chapter">
+      <h2>Chapter 4</h2>
+      <div class="choice-line">
+        <span class="checkbox" id="confided">☑</span>
+        <span>You confided in Jake.</span>
+      </div>
+      <div class="choice-line">
+        <span class="checkbox" id="not-confided">☐</span>
+        <span>You didn't confide in Jake.</span>
+      </div>
+      <p class="explanation">
+        It's okay to open up about your feelings, but online groomers take advantage of your emotional vulnerability to build trust and dependency. 
+        Instead of relying on someone online, turn to those around you or find comfort in yourself.
+      </p>
+    </div>
+
+    <div class="summary-chapter">
+      <h2>Chapter 5</h2>
+      <div class="choice-line">
+        <span class="checkbox" id="accepted-gift">☑</span>
+        <span>You accepted Jake's gift.</span>
+      </div>
+      <div class="choice-line">
+        <span class="checkbox" id="rejected-gift">☐</span>
+        <span>You rejected Jake's gift.</span>
+      </div>
+      <p class="explanation">
+        Expensive gifts can be tempting, but they usually come with strings attached. As a known grooming tactic, 
+        online groomers use gifts to make you feel special. Declining gifts isn't rude, and you can always save up for them.
+      </p>
+    </div>
+
+    <div class="summary-chapter">
+      <h2>Chapter 7</h2>
+      <div class="choice-line">
+        <span class="checkbox" id="accepted-call">☑</span>
+        <span>You accepted Jake's video call.</span>
+      </div>
+      <div class="choice-line">
+        <span class="checkbox" id="rejected-call">☐</span>
+        <span>You rejected Jake's video call.</span>
+      </div>
+      <p class="explanation">
+        Video calls are convenient, but persistent requests often come with malicious intent. Online groomers gain full visual access, 
+        and they might record and take screenshots without your knowledge. You're one click away from everything or nothing.
+      </p>
+    </div>
+
+    <div class="summary-chapter">
+      <h2>Chapter 9</h2>
+      <div class="choice-line">
+        <span class="checkbox" id="sent-photo">☑</span>
+        <span>You sent Jake a photo.</span>
+      </div>
+      <div class="choice-line">
+        <span class="checkbox" id="not-sent-photo">☐</span>
+        <span>You didn't send Jake a photo.</span>
+      </div>
+      <p class="explanation">
+        Sending explicit photos may be a chance to gain validation, especially when you don't receive it elsewhere. 
+        Online groomers may use these images to praise you into further compliance or threaten to use them as blackmail. 
+        Your body is not someone else's object.
+      </p>
+    </div>
+
+    <div class="summary-chapter">
+      <h2>Chapter 10</h2>
+      <div class="choice-line">
+        <span class="checkbox" id="met-up">☑</span>
+        <span>You met up with Jake.</span>
+      </div>
+      <div class="choice-line">
+        <span class="checkbox" id="not-met-up">☐</span>
+        <span>You didn't meet up with Jake.</span>
+      </div>
+      <p class="explanation">
+        Meeting someone you only know online can have irreversible consequences. Online groomers tend to pick remote locations 
+        far from onlookers to protect themselves. Always tell someone you trust and bring them along. 
+        It's also never too late to cancel on them.
+      </p>
+    </div>
+    <div class="summary-navigation">
+      <button class="nav-button" onclick="goBackToEnd()">Back</button>
+      <button id="to-advice-button" class="nav-button" onclick="showAdviceScreen()">Next</button>
+    </div>  
+  </div>
+</div>
+
+<div id="advice-screen" style="display: none;">
+  <div id="advice-content">
+    <h1>Here are the 4 key actions you can take:</h1>
+
+    <div class="summary-chapter">
+      <h2>Set boundaries</h2>
+      <p class="explanation">
+        Protect your privacy, consider who you interact with, and be mindful of what you share or consume online.
+      </p>
+    </div>
+
+    <div class="summary-chapter">
+      <h2>Think before acting</h2>
+      <p class="explanation">
+        Always take a step back and consider the risks and consequences before sharing, responding, accepting, or meeting.
+      </p>
+    </div>
+
+    <div class="summary-chapter">
+      <h2>Flag and report</h2>
+      <p class="explanation">
+        Call out suspicious behaviour or harmful content by reporting it to platforms, trusted adults, or authorities.
+      </p>
+    </div>
+
+    <div class="summary-chapter">
+      <h2>Tell someone</h2>
+      <p class="explanation">
+        Talk to someone you trust when you feel unsure, uncomfortable, or unsafe.
+      </p>
+    </div>
+
+    <p class="closing-note">
+      Real friends respect your boundaries. Real friends want you to be safe. <br>
+      If any part of this story felt familiar, please talk to someone. You are not alone.
+    </p>
+    <div class="nav-buttons-container">
+    <button class="nav-button" onclick="goBackToSummary()">Back</button>
+    <button id="restart-button" onclick="restartGame()">Play Again</button>
+    </div>
+  </div>
+</div>
+
+
+</body>
