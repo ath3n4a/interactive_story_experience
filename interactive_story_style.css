@@ -1,0 +1,1662 @@
+* {
+    box-sizing: border-box;
+}
+:root { --ui-scale: 1; }
+
+.scale-me {
+  transform: scale(var(--ui-scale));
+  transform-origin: center center;
+}
+
+.scale-bottom {
+  transform: scale(var(--ui-scale));
+  transform-origin: bottom center; /* feels better for the dialogue box pinned low */
+}
+
+/* Optional: bump global text a bit on 4K+ so anything we missed still feels right */
+html { font-size: clamp(16px, 1.2vw + 0.6vh, 26vw); }
+body {
+    font-family: 'Schoolbell';
+    margin: 0;
+    padding: 0;
+    max-width: 100%;
+    max-height: 100%;
+    background-color: black;
+}
+
+#title-screen {
+  position: fixed;
+  inset: 0;
+  background-color: black;
+  color: white;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+}
+
+#title-screen-page1 {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-image: url('images/title-screen.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover; /* was 100% */
+  z-index: 0;
+}
+#invite-modal{
+  position:fixed; inset:0; display:none;
+  align-items:center; justify-content:center;
+  background:rgba(0,0,0,0.45);
+  z-index:3000;
+}
+.invite-card{
+  width: clamp(280px, 42vw, 520px);
+  background:#2b2d31; color:#fff;
+  border-radius:16px; padding:24px 20px;
+  box-shadow:0 10px 40px rgba(0,0,0,.45);
+  text-align:center; border:1px solid rgba(255,255,255,.08);
+}
+.invite-title{opacity:.9; font-size:18px; margin-bottom:8px;}
+.invite-name{font-size:28px; font-weight:800; margin-bottom:18px;}
+.invite-cta{
+  display:inline-block; width:100%;
+  padding:14px 16px; border-radius:10px; border:none;
+  background:#5865f2; color:#fff; font-weight:700;
+  font-family: 'Schoolbell';
+  font-size: 18px;
+  cursor:pointer;
+}
+.invite-cta:hover{
+  background-color: #ee9b00;
+  color: white;
+}
+#start-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  height: auto;
+}
+
+#start-button:hover {
+  background: none;
+  border: none;
+}
+
+#player-name {
+  font-family: 'Schoolbell';
+  font-size: 24px;
+  width: 425px;
+  height: 65px;
+  text-align: center;
+  padding: 10px 20px;
+  border: 5px solid #ee9b00;
+  border-radius: 15px;
+  background-color: white;
+  color: black;
+  outline: none;
+}
+
+#player-name,
+#start-button {
+  position: relative;
+  top: 52vh;
+}
+
+#relationship-bar {
+  position: fixed;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;                 /* stays hidden until JS shows it */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(4px, 0.6vw, 10px);
+
+  /* Responsive box */
+  padding: clamp(6px, 1.2vw, 14px) clamp(12px, 1.6vw, 20px);
+  width: clamp(260px, 40vw, 500px);   /* scales nicely across screens */
+  max-width: 90vw;                    /* never overflow smaller screens */
+  background: white;
+  border: 2px solid black;
+  border-radius: 999px;
+  z-index: 2;
+  transition: opacity 0.5s ease;
+}
+
+/* Label scales with screen */
+#relationship-label {
+  font-family: 'Schoolbell', cursive;
+  font-size: clamp(16px, 1.8vw, 22px);
+  font-weight: bold;
+  color: black;
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* Hearts row + responsive spacing */
+#relationship-hearts {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(4px, 0.6vw, 10px);
+}
+
+/* Heart size scales with screen */
+#relationship-hearts img {
+  width: clamp(18px, 2.3vw, 32px);
+  height: auto;
+}
+
+.chapter-1 {
+  position: fixed;
+  bottom: 5%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+#livestream-screen {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url('images/livestream-screen.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover; /* was 100% */
+  z-index: 0;
+}
+
+#play-button {
+  position: fixed;
+  top: 34vh;
+  right: 53vw;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+}
+
+#play-button img {
+  width: 10vw;
+  height: auto;
+}
+
+#livestream-play-screen {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url('images/livestream-play-screen.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover; /* was 100% */
+  z-index: 0;
+}
+
+#jake-shadow-overlay {
+  position: fixed;
+  width: 20%;
+  height: auto;
+  bottom: -30vw;
+  left: 5vw;
+  display: none;
+  z-index: 1;
+}
+
+#server-screen {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url('images/server-screen.PNG'); 
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 0;
+}
+
+#server-screen-2 {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url('images/server-screen-2.PNG'); 
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover; 
+  z-index: 0;
+}
+
+#valorian-with-jake-screen {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url('images/valorian-screen.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover; /* was 100% */
+  z-index: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+#victory-screen {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url('images/victory-screen.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover; /* was 100% */
+  z-index: 0;
+}
+
+#dm-screen {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url('images/dm-screen.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover; /* was 100% */
+  z-index: 0;
+  transition: opacity 0.5s ease;
+}
+
+/* DM Desktop Interface Styles */
+#dm-desktop-interface {
+  position: fixed;
+  width: clamp(720px, 42vw, 1680px);
+  height: clamp(420px, 28vw, 1037px);
+  border-radius: clamp(14px, 1.1vw, 22px);
+  box-shadow: 0 0 clamp(18px, 2vw, 36px) rgba(0,0,0,0.7);
+  background-color: #1e1e1e;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 1000;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.5s ease;
+}
+
+.desktop-dm-header {
+  padding: 15px;
+  background-color: #2a2a2a;
+  border-bottom: 1px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.desktop-dm-user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.desktop-dm-avatar {
+  width: clamp(36px, 2.5vw, 56px);
+  height: clamp(36px, 2.5vw, 56px);
+  border-radius: 50%;
+  border: 2px solid #4CAF50;
+  background-color: #009688;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-weight: bold;
+}
+
+.desktop-dm-username {
+  font-weight: bold;
+  color: white;
+  font-size: clamp(16px, 1.2vw, 22px);
+}
+
+.desktop-dm-status {
+  font-size: 16px;
+  color: #4CAF50;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.desktop-dm-status-dot {
+  width: 8px;
+  height: 8px;
+  background-color: #4CAF50;
+  border-radius: 50%;
+}
+
+.desktop-dm-messages {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: #121212;
+}
+
+.desktop-dm-message {
+  max-width: 60%;
+  padding: 12px 18px;
+  border-radius: 18px;
+  font-size: clamp(16px, 1.2vw, 22px);
+  line-height: 1.4;
+  word-wrap: break-word;
+  position: relative;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeIn 0.5s forwards;
+}
+
+
+
+.desktop-dm-message.jake {
+  align-self: flex-start;
+  background-color: #009688;
+  color: white;
+  border-bottom-left-radius: 5px;
+}
+
+.desktop-dm-message.player {
+  align-self: flex-end;
+  background-color: #ee9b00;
+  color: white;
+  border-bottom-right-radius: 5px;
+}
+
+.desktop-dm-message .sender {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+  font-size: 18px;
+}
+
+.desktop-dm-input-container {
+  display: flex;
+  padding: 15px;
+  background-color: #2a2a2a;
+  border-top: 1px solid #333;
+  pointer-events: none;
+  cursor: default;
+  user-select: none;
+}
+
+.desktop-dm-input-box {
+  flex: 1;
+  min-height: 50px;
+  max-height: 150px;
+  padding: 12px 18px;
+  background-color: #333;
+  color: white;
+  border-radius: 25px;
+  border: none;
+  outline: none;
+  overflow-y: auto;
+  font-family: 'Schoolbell';
+  font-size: clamp(16px, 1.2vw, 22px);
+  pointer-events: none;
+  cursor: default;
+  user-select: none;
+}
+
+.desktop-dm-input-box:empty:before {
+  content: attr(placeholder);
+  color: #999;
+}
+
+.desktop-dm-send-button {
+  width: clamp(44px, 3vw, 60px);
+  height: clamp(44px, 3vw, 60px);
+  margin-left: 10px;
+  background-color: #ee9b00;
+  color: black;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.desktop-dm-send-button:hover {
+  background-color: #ffb700;
+}
+
+.desktop-typing-indicator {
+  color: #999;
+  font-size: 16px;
+  padding: 10px 15px;
+  align-self: flex-start;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeIn 0.5s forwards;
+}
+
+.desktop-dm-choice-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 30px;
+  margin-bottom: 15px;
+  align-self: center;
+  width: 90%;
+}
+
+.desktop-dm-choice-button {
+  background-color: #333;
+  color: white;
+  border: 1px solid #555;
+  border-radius: 18px;
+  padding: 12px 18px;
+  font-family: 'Schoolbell';
+  font-size: 18px;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s;
+  white-space: normal;
+  word-wrap: break-word;
+  line-height: 1.4;
+}
+
+.desktop-dm-choice-button:hover {
+  background-color: #ee9b00;
+  color: white;
+}
+
+/* Mobile DM Interface Styles */
+#mobile-dm-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#mobile-dm-interface {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    position: relative; /* make sure it stacks inside the screen */
+    z-index: 2001;
+}
+
+.phone-mockup {
+  width: clamp(280px, 18vw, 4020px);
+  height: clamp(520px, 34vw, 7080px);
+
+  border-radius: clamp(18px, 1.5vw, 28px);
+  border-width: clamp(3px, 0.4vw, 6px);
+  box-shadow: 0 0 clamp(12px, 1.2vw, 24px) rgba(0,0,0,.5);
+    background-color: #000;
+    padding: 10px;
+    box-sizing: border-box;
+    position: relative;
+    border: 6px solid #333;
+    margin-top: 100px;
+}
+
+.mobile-dm-container {
+    width: 100%;
+    height: 100%;
+    background-color: #1e1e1e;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+.mobile-dm-header {
+    padding: 15px;
+    background-color: #2a2a2a;
+    border-bottom: 1px solid #333;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mobile-dm-user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mobile-dm-avatar {
+    width: clamp(36px, 2.5vw, 56px);
+    height: clamp(36px, 2.5vw, 56px);
+    border-radius: 50%;
+    border: 2px solid #4CAF50;
+    background-color: #009688;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+}
+
+.mobile-dm-username {
+    font-size: clamp(13px, 1vw, 16px);
+    font-weight: bold;
+    color: white;
+}
+
+.mobile-dm-status {
+    font-size: 14px;
+    color: #4CAF50;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.mobile-dm-status-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+}
+
+.mobile-dm-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #121212;
+    padding-bottom: 20px;
+}
+
+.mobile-dm-message {
+    max-width: 75%;
+    padding: 10px 15px;
+    border-radius: 18px;
+    font-size: clamp(14px, 1.1vw, 18px);
+    line-height: 1.4;
+    word-wrap: break-word;
+    position: relative;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeIn 0.5s forwards;
+}
+
+.mobile-dm-message.jake {
+    align-self: flex-start;
+    background-color: #099396;
+    color: white;
+    border-bottom-left-radius: 5px;
+}
+
+.mobile-dm-message.player {
+    align-self: flex-end;
+    background-color: #ee9b00;
+    color: white;
+    border-bottom-right-radius: 5px;
+}
+
+.mobile-dm-message .sender {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.mobile-dm-input-container {
+    display: flex;
+    padding: 15px;
+    background-color: #2a2a2a;
+    border-top: 1px solid #333;
+}
+
+.mobile-dm-input-box {
+    flex: 1;
+    min-height: 50px;
+    max-height: 150px;
+    padding: 10px 15px;
+    background-color: #333;
+    color: white;
+    border-radius: 25px;
+    border: none;
+    outline: none;
+    overflow-y: auto;
+    font-family: 'Schoolbell', cursive;
+    font-size: clamp(13px, 1vw, 16px);
+    pointer-events: none;
+    cursor: default;
+    user-select: none;
+    display: flex;
+    align-items: center;
+}
+
+.mobile-dm-input-box:empty:before {
+    content: attr(placeholder);
+    color: #999;
+}
+
+.mobile-dm-send-button {
+    width: clamp(44px, 3vw, 60px);
+    height: clamp(44px, 3vw, 60px);
+    margin-left: 10px;
+    background-color: #ee9b00;
+    color: black;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-dm-send-button:hover {
+    background-color: #ffb700;
+}
+
+.mobile-dm-choice-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    align-self: center;
+    width: 90%;
+}
+
+.mobile-dm-choice-button {
+    background-color: #333;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 18px;
+    padding: 10px 15px;
+    font-family: 'Schoolbell', cursive;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.2s;
+}
+
+.mobile-dm-choice-button:hover {
+    background-color: #ee9b00;
+    color: white;
+}
+
+.mobile-typing-indicator {
+    color: #999;
+    font-size: 14px;
+    padding: 10px 15px;
+    align-self: flex-start;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeIn 0.5s forwards;
+}
+
+.mobile-dm-message.image { padding-bottom: 12px; }
+
+.mobile-dm-caption {
+  display: block;
+  margin-bottom: 8px;
+  opacity: 0.95;
+}
+
+.mobile-dm-image-message {
+  display: block;
+  max-width: 220px;     /* keeps it within the bubble */
+}
+
+.mobile-dm-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 3px solid rgba(255,255,255,0.4);
+}
+
+/* Blur the background when DM interface is active */
+.dm-background-blur {
+  filter: blur(5px);
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
+#defeat-screen {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url('images/defeat-screen.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100%;
+  z-index: 0;
+  transition: opacity 0.5s ease;
+}
+
+#kitchen-screen {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url('images/kitchen-screen.gif');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100%;
+  z-index: 0;
+}
+
+#gun-skins-screen {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url('images/gun-skins-screen.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100%;
+  z-index: 0;
+}
+
+#phone-ring-screen {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url('images/phone-ring-screen.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100%;
+  z-index: 0;
+}
+
+#homework-keyboard-screen {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url('images/homework-keyboard-screen.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100%;
+  z-index: 0;
+}
+
+#bowl-on-desk-screen {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url('images/bowl-on-desk-screen.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+#phone-on-bed-screen {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url('images/phone-on-bed.PNG');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  z-index: 0;
+}
+
+
+#video-call-screen {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url('images/video-call-screen.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100%;
+  z-index: 0;
+}
+
+#content-warning-screen {
+  position: fixed;
+  inset: 0;
+  background-color: black;
+  color: white;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: 'Schoolbell';
+  text-align: center;
+  z-index: 9999;
+}
+
+#content-warning-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 30px;
+  background-color: black;
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+#content-warning-screen h1 {
+  font-size: 48px;
+  margin: 0 0 30px 0;
+  color: #ee9b00;
+}
+
+#content-warning-screen p {
+  font-size: 24px;
+  line-height: 1.5;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#mom-knock-screen {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url('images/mom-knock-screen.gif');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100%;
+  z-index: 0;
+}
+
+#hallway-screen {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url('images/hallway-screen.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100%;
+  z-index: 0;
+}
+
+#train-station-screen {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-image: url('images/train-station-screen.jpg');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100%;
+  z-index: 0;
+}
+
+
+.dialogue-container {
+  width: 65vw;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  z-index: 100;
+  transition: opacity 0.5s ease;
+}
+
+.name-tag {
+  position: absolute;
+  left: 0;
+  bottom: 160px;
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  padding: 5px 15px;
+  font-size: 24px;
+  z-index: 2;
+}
+
+
+.dialogue-box {
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+    width: 100%;
+    height: 150px;
+    padding: 15px;
+    box-sizing: border-box;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    border-radius: 0;
+    outline: none;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.dialogue-box p {
+  margin: 0;
+  width: 100%;
+  font-size: 24px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
+.dialogue-icon {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  font-size: 30px;
+  color: black;
+  pointer-events: none;
+}
+
+.choice-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-self: flex-end;
+  margin-bottom: 10px;
+}
+
+.choice-button {
+  background-color: white;
+  border: 2px solid black;
+  padding: 5px 15px;
+  font-family: 'Schoolbell';
+  font-size: 24px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.choice-button:hover {
+  background-color: #ee9b00;
+  color: white;
+}
+
+
+/* Effects */
+.damage-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 0, 0, 0.3);
+    z-index: 998;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none; /* Allows clicks to pass through */
+    animation: fadeInOut 1s ease-in-out;
+}
+
+.damage-heart {
+    font-size: 50px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    animation: fadeInOut 1s ease-in-out;
+    z-index: 999;
+}
+
+.damage-heart img {
+    width: 50px;
+    height: 50px;
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.heart-gain {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 50px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    animation: fadeInOut 1s ease-in-out;
+    z-index: 999;
+    pointer-events: none;
+}
+
+.heart-gain img {
+    width: 50px;
+    height: 50px;
+}
+
+.floating-heart {
+  position: fixed;
+  width: 30px;
+  height: 30px;
+  pointer-events: none;
+  z-index: 999;
+  animation: float-up 3s ease-in forwards;
+  background-image: url('images/heart-effect.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+@keyframes float-up {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-150vh) rotate(360deg); opacity: 0; }
+}
+
+
+/* Screen Shake */
+.shake {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+@keyframes shake {
+    10%, 90% { transform: translate3d(-1px, 0, 0); }
+    20%, 80% { transform: translate3d(2px, 0, 0); }
+    30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+    40%, 60% { transform: translate3d(4px, 0, 0); }
+}
+
+/* Chapter Screens */
+.chapter-screen {
+  position: fixed;
+  inset: 0;
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9998;
+  font-family: 'Schoolbell';
+}
+
+.chapter-content {
+  font-size: 72px;
+  color: #ee9b00;
+  text-align: center;
+}
+
+
+#end-screen {
+  position: fixed;
+  inset: 0;
+  background-color: black;
+  color: white;
+  display: none; /* hidden by default */
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: 'Schoolbell';
+  text-align: center;
+  z-index: 100;
+}
+
+#end-screen h1 {
+  font-size: 48px;
+  margin: 0 0 30px 0;
+}
+
+#end-screen p {
+  font-size: 24px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+#red-flags-screen {
+  position: fixed;
+  inset: 0;
+  background-color: black;
+  color: white;
+  display: none;            /* hidden by default */
+  font-family: 'Schoolbell';
+  z-index: 101;             /* sit next to summary's layer */
+  overflow-y: auto;
+  padding: 50px 0;
+
+  /* center content horizontally like summary */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Match #summary-content sizing */
+#red-flags-content {
+  width: 80%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;                /* same block spacing as summary */
+}
+
+/* Use the same visual language as summary chapters */
+#red-flags-content h1 {
+  margin: 0;                /* summary uses tight headings */
+}
+
+.summary-chapter h2 {
+  font-size: 32px;          /* same as summary */
+  margin: 0;
+  color: #ee9b00;
+}
+
+/* Reuse summary's explanation card look for each flag line */
+#red-flags-content .explanation {
+  font-size: 20px;
+  line-height: 1.5;
+  margin: 10px 0 0 0;
+  padding: 15px;
+  background-color: #222;
+  border-left: 3px solid #ee9b00;
+}
+
+/* Button row centered & spaced like summary */
+.summary-navigation {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.nav-row {
+  display: flex;
+  gap: clamp(10px, 2vw, 24px);
+  margin-top: clamp(18px, 2.5vw, 36px);
+}
+
+/* Reuse your .nav-button style if present; otherwise ensure it's readable */
+.nav-button {
+  padding: 10px 18px;
+  border: 2px solid #ee9b00;
+  border-radius: 10px;
+  background: #ee9b00;
+  color: black;
+  font-family: 'Schoolbell';
+  font-size: clamp(16px, 1.2vw, 22px);
+  cursor: pointer;
+}
+.nav-button:hover { background: #ffb700; }
+
+
+#summary-screen {
+  position: fixed;
+  inset: 0;
+  background-color: black;
+  color: white;
+  display: none;
+  font-family: 'Schoolbell';
+  z-index: 101;
+  overflow-y: auto;
+  padding: 50px 0;
+
+  /* Center content horizontally */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#summary-content {
+  width: 80%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.summary-chapter {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.summary-chapter h2 {
+  font-size: 32px;
+  margin: 0;
+  color: #ee9b00;
+}
+
+.summary-navigation {
+  display: flex;
+  justify-content: center; /* centers them horizontally */
+  gap: 50px; /* space between buttons */
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.summary-navigation button {
+  flex: 0 0 auto; /* keeps them from stretching */
+}
+
+.choice-line {
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox {
+  font-size: 28px;
+}
+
+.explanation {
+  font-size: 20px;
+  line-height: 1.5;
+  margin: 10px 0 0 0;
+  padding: 15px;
+  background-color: #222;
+  border-left: 3px solid #ee9b00;
+}
+
+#restart-button {
+  background-color: #ee9b00;
+  color: black;
+  border: none;
+  border-radius: 10px;
+  padding: 15px 30px;
+  font-family: 'Schoolbell';
+  font-size: 24px;
+  cursor: pointer;
+  margin-top: 30px;
+  align-self: center;
+}
+
+#restart-button:hover {
+  background-color: #ffb700;
+}
+
+.nav-button {
+  background-color: #ee9b00;
+  color: black;
+  border: none;
+  padding: 15px 30px;
+  font-family: 'Schoolbell';
+  font-size: 24px;
+  cursor: pointer;
+  margin-top: 30px;
+  align-self: center;
+}
+
+.nav-button:hover {
+  background-color: #ffb700;
+}
+
+.nav-buttons-container {
+  display: flex;
+  justify-content: center;  /* centers both buttons */
+  gap: 50px;                 /* space between buttons */
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
+
+.nav-buttons-container .nav-button {
+  flex: 0 0 auto;            /* keeps them from stretching */
+}
+
+#advice-screen {
+  position: fixed;
+  inset: 0;
+  background-color: black;
+  color: white;
+  display: none;
+  font-family: 'Schoolbell';
+  z-index: 102;
+  overflow-y: auto;
+  padding: 50px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#advice-content {
+  width: 80%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.advice-list {
+  font-size: 20px;
+  line-height: 1.6;
+  padding-left: 20px;
+}
+
+.advice-list li {
+  margin-bottom: 15px;
+}
+
+.closing-note {
+  font-size: 20px;
+  text-align: center;
+  line-height: 1.5;
+  padding-top: 20px;
+  color: white;
+}
+
+.mobile-dm-image-placeholder {
+  width: 200px;
+  height: 300px;
+  background-color: #333;
+  color: #999;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Schoolbell';
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+/* Reuse your existing blur look for bg */
+.dm-background-blur {
+  filter: blur(6px);
+}
+
+/* Match testing file image sizing/structure */
+/* --- Image message = colored bubble that wraps the image --- */
+
+
+/* keep the sender label with a small gap */
+.mobile-dm-message.image .sender {
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* wrapper that centers the photo rectangle inside the bubble */
+.mobile-dm-image-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* the dark “photo” rectangle like your screenshot */
+.mobile-dm-image-placeholder {
+  width: 200px;               /* photo box size */
+  height: 300px;
+  background-color: #333;
+  color: #9aa0a6;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Schoolbell';
+  font-size: 14px;
+  margin: 0;                  /* no extra margin; bubble padding provides the spacing */
+}
+
+/* Selfie message look (caption + image inside colored bubble) */
+.mobile-dm-message.image { padding: 12px 14px; }
+
+.mobile-dm-caption {
+  display: block;
+  margin-bottom: 8px;
+  line-height: 1.35;
+}
+
+/* Keeps the selfie box centered inside the bubble */
+.mobile-dm-image-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mobile-dm-image-placeholder {
+  width: 200px;
+  height: 300px;
+  background-color: #333;
+  color: #9aa0a6;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Schoolbell';
+  font-size: 14px;
+}
+
+/* keep the colored bubble, just adjust spacing */
+.mobile-dm-message.image {
+  padding: 12px 14px;  /* or match your text bubble padding */
+}
+.mobile-dm-image-message {
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 6px;     /* little gap under the caption */
+}
+
+/* ensure selfies keep the same colored bubble */
+.mobile-dm-message.image.jake  { background-color: #099396 !important; color: #fff; }
+.mobile-dm-message.image.player{ background-color: #ee9b00 !important; color: #fff; }
+
+/* Chat Log button (top-left) */
+#chatlog-btn {
+  position: fixed;
+  top: 5%;
+  left: 2.5%;
+  z-index: 10000;
+  background: white;
+  color: black;
+  border: 2px solid black;
+  border-radius: 10px;
+  width: 44px;
+  height: 44px;
+  font-size: 20px;
+  cursor: pointer;
+  display: none; /* JS will show/hide */
+}
+#chatlog-btn:hover {
+    background-color: #ee9b00;
+}
+/* Overlay */
+#chatlog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  display: none; /* JS toggles */
+}
+
+#chatlog-overlay .chatlog-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+}
+
+#chatlog-overlay .chatlog-card {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(900px, 90vw);
+  height: min(75vh, 90vh);
+  transform: translate(-50%, -50%);
+  background: #111;
+  color: white;
+  border: 2px solid #333;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  font-family: 'Schoolbell', cursive;
+}
+
+.chatlog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid #333;
+}
+
+.chatlog-header h2 { margin: 0; font-size: 24px; color: #ee9b00; }
+
+.chatlog-close {
+  background: transparent;
+  color: white;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.chatlog-content {
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.chatlog-chapter h3 {
+  margin: 0 0 10px 0;
+  color: #ee9b00;
+  font-size: 22px;
+  border-bottom: 1px dashed #333;
+  padding-bottom: 6px;
+}
+
+.chatlog-line {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 10px;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.chatlog-speaker {
+  color: #aaa;
+  white-space: nowrap;
+}
+
+.chatlog-text { color: #fff; white-space: pre-wrap; }
+
+#mobile-notification-tray {
+  position: fixed !important;              /* float above layout (won't push UI) */
+  top: 7% !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;  /* center horizontally */
+  width: clamp(260px, 40vw, 500px) !important; /* mirror relationship bar width */
+  max-width: 90vw !important;
+
+  display: flex !important;                 /* center notif bubble inside tray */
+  justify-content: center !important;
+  align-items: center !important;
+
+  pointer-events: none !important;
+  z-index: 3005 !important;                 /* above phone UI & relationship bar */
+}
+
+/* === NOTIFICATION CARD === */
+.mobile-notif {
+  max-width: 100%;
+  margin: 0 auto;
+  display: inline-block;
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-size: 16px;        /* match mobile DM text size */
+  line-height: 1.35;
+  text-align: center;
+
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+.mobile-notif.show { opacity: 1; transform: translateY(0); }
+
+@keyframes notif-fadeout {
+  to { opacity: 0; transform: translateY(-6px); }
+}
+
+/* 4.5K (≥4480px wide) */
+
+/* Make sure every full-screen background actually covers huge viewports */
+#server-screen,
+#victory-screen,
+#dm-screen,
+#livestream-screen,
+#livestream-play-screen,
+#valorian-with-jake-screen,
+#kitchen-screen,
+#gun-skins-screen,
+#phone-ring-screen,
+#homework-keyboard-screen,
+#video-call-screen,
+#mom-knock-screen,
+#hallway-screen,
+#train-station-screen {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
